@@ -55,8 +55,6 @@ app.delete('/api/persons/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-// const generateId = () => Math.floor(Math.random()*999999)
-
 app.post('/api/persons', (request, response) => {
   const body = request.body
 
@@ -85,6 +83,21 @@ app.post('/api/persons', (request, response) => {
     response.json(savedPerson)
   })
 
+})
+
+app.put('/api/persons/:id', (request, response, next) => {
+  const body = request.body
+
+  const person = {
+    name: body.name,
+    number: body.number,
+  }
+
+  Person.findByIdAndUpdate(request.params.id, person, { new: true })
+    .then(updatedPerson => {
+      response.json(updatedPerson)
+    })
+    .catch(error => next(error))
 })
 
 const errorHandler = (error, request, response, next) => {
